@@ -25,16 +25,16 @@ class Controller {
         })
     }
 
-    // static c_addPatient(name,diagnosis){
+    static c_addPatient(name,diagnosis){
 
-    //     Patient.m_addPatient(name, diagnosis, function(err,data){
-    //         if(err){
-    //             View.v_error(err)
-    //         } else {
-    //             View.v_addPatient(data)
-    //         }
-    //     })
-    // }
+        Patient.m_addPatient(name, diagnosis, function(err,data){
+            if(err){
+                View.v_error(err)
+            } else {
+                View.v_addPatient(data)
+            }
+        })
+    }
 
     static c_logout(username){
         Employee.m_logout(username,function(err,data){
