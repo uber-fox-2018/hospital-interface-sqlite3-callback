@@ -16,9 +16,8 @@ db.serialize(()=> {
     db.serialize( () => {
         let patients = `CREATE TABLE IF NOT EXISTS patients (
             id	        INTEGER     PRIMARY KEY AUTOINCREMENT,
-            first_name	VARCHAR,
-            last_name	VARCHAR,
-            disease	    TEXT,
+            name	    VARCHAR,
+            diagnosis   TEXT,
             create_at	TIMESTAMP   DEFAULT     CURRENT_TIMESTAMP
         );`;
         db.run(patients);

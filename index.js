@@ -21,10 +21,17 @@ class Route {
             case 'logout':
                 ctrl.logout();
                 break;
-            // case 'register':
-            //     ctrl.register();
-            //     break;
+            case 'addPatient':
+                ctrl.addPatient();
+                break;
+            case 'employees':
+                ctrl.employees();
+                break;
+            case 'patients':
+                ctrl.patients();
+                break;
             default:
+
                 break;
         }
     }

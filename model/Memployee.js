@@ -1,12 +1,4 @@
-const db = require('./config.js');
-
-class Patient {
-  constructor(id, name, diagnosis) {
-    this.id = id
-    this.name = name
-    this.diagnosis = diagnosis
-  }
-}
+const db = require('../config.js');
 
 class Employee {
 	constructor(username, password, role) {
@@ -15,6 +7,13 @@ class Employee {
 		this.password = password
 		this.role = role
 	}
+
+	listEmployees(cb) {
+		let query = `SELECT * FROM ${this.table}`;
+		db.all(query, (err, data) => {
+			cb(data)
+		})
+	} 
 
 	// ambil data, username dan password yang dientrikan 
 	login(username, password, cbLogin) {
@@ -64,10 +63,6 @@ class Employee {
 		})
 	}
 
-
 }
 
-module.exports = {
-	employee	: Employee,
-	patient 	: Patient
-};
+module.exports = Employee
