@@ -17,37 +17,61 @@ class Hospital {
   }
 
   static register (inputArr){
-    Model.addEmployee(inputArr, (message)=> {
-      View.display(message);
+    Model.addEmployee(inputArr, (err, result)=> {
+      if (err){
+        View.display(err.message);
+      } else {
+        View.display(result.message);
+      }
     })
   }
 
   static login (name, pwd){
-    Model.isAnotherLoggedIn((isThere)=>{
-      if (isThere){
-        View.display(`another user is still logged in. log him/her out first!`);
+    Model.isAnotherLoggedIn((err, isThere)=>{
+      if (err){
+        View.display(err.message);
       } else {
-        Model.loggingIn(name, pwd, (message)=> {
-          View.display(message);
-        })
+        if (isThere){
+          View.display(`another user is still logged in. log him/her out first!`);
+        } else {
+          Model.loggingIn(name, pwd, (err, result)=> {
+            if (err){
+              View.display(err.message);
+            } else {
+              View.display(result.message);
+            }
+          })
+        }
       }
     })
   }
 
   static logout (){
-    Model.logout((message)=> {
-      View.display(message)
+    Model.logout((err, result)=> {
+      if(err){
+        View.display(err.message);
+      } else {
+        View.display(result.message);
+      }
     })
   }
 
   static addPatient(name, diagnosis){
-    Model.isDoctorLoggedIn((isDoctor) => {
-      if (!isDoctor){
-        View.display(`you dont have access to add patient`);
+    Model.isDoctorLoggedIn((err, isDoctor) => {
+      if (err){
+        View.display(err.message);
       } else {
-        Model.addPatient(name, diagnosis, (message)=> {
-          View.display(message);
-        })
+        if (!isDoctor){
+          View.display(`you dont have access to add patient`);
+        } else {
+          Model.addPatient(name, diagnosis, (err, result)=> {
+            if (err){
+              View.display(err.message);
+            } else {
+              View.display(result.message);
+            }
+          })
+        }
       }
     })
   }

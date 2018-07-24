@@ -27,7 +27,7 @@ class Hospital {
       let total;
       db.all(`SELECT * FROM 'Employees'`, (err, rows) => {
         if (err){
-          console.log(err.message);
+          return cb(err, null);
         } else {
           total = rows.length + 1;
         }
@@ -35,9 +35,9 @@ class Hospital {
 
       db.run(`INSERT INTO 'Employees' (${keys}) VALUES('${newEmp.username}', '${newEmp.password}', '${newEmp.position}', '${newEmp.loginStatus}')`, (err) => {
         if (err) {
-          console.log(err.message);
+          return cb (err, null);
         } else {
-          cb(`username: ${newEmp.username}, position: ${newEmp.position} with password ${newEmp.password} saved successfully. Total employee : ${total}`);
+          return cb(null, {message: `username: "${newEmp.username}", position: ${newEmp.position} with password ${newEmp.password} saved successfully. Total employee : ${total}`});
         }
       })
     })
@@ -46,16 +46,16 @@ class Hospital {
   static loggingIn (name, pwd, cb){
     db.get(`SELECT * FROM 'Employees' WHERE username = '${name}' AND password = '${pwd}'`, (err, row) => {
       if (err){
-        console.log(err.message);
+        return cb (err, null);
       } else {
         if (!row){
-          cb (`wrong username / password`);
+          return cb (null, {message: `wrong username / password`});
         } else {
           db.run (`UPDATE 'Employees' SET loginStatus = 'true' WHERE username = '${name}'`, (err) => {
             if (err) {
-              console.log(err.message);
+              return cb (err, null);
             } else {
-              cb (`${name} logged in successfully`);
+              return cb (null, {message: `${name} logged in successfully`});
             }
           })
         }
@@ -66,12 +66,12 @@ class Hospital {
   static isAnotherLoggedIn (cb){
     db.get(`SELECT * FROM 'Employees' WHERE loginStatus = 'true'`, (err, row) => {
       if (err){
-        console.log(err.message);
+        return cb (err, null);
       } else {
         if (!row){
-          cb (false);
+          return cb (null, false);
         } else {
-          cb (true);
+          return cb (null, true);
         }
       }
     })
@@ -80,12 +80,12 @@ class Hospital {
   static isDoctorLoggedIn (cb){
     db.get(`SELECT * FROM 'Employees' WHERE position = 'doctor' AND loginStatus = 'true'`, (err, row) => {
       if (err){
-        console.log(err.message);
+        return cb (err, null);
       } else {
         if (!row){
-          cb (false);
+          return cb (err, false);
         } else {
-          cb (true);
+          return cb (err, true);
         }
       }
     })
@@ -94,14 +94,14 @@ class Hospital {
   static logout (cb){
     db.run (`UPDATE 'Employees' SET loginStatus = 'false'`, (err) => {
       if (err) {
-        console.log(err.message);
+        return cb (err, null);
       } else {
-        cb (`logged out successfully`);
+        return cb (null, {message: `logged out successfully`});
       }
     })
   }
 
-  static addPatient (name, diagnosis){
+  static addPatient (name, diagnosis, cb){
     let newPatient = new Patient (name, diagnosis);
     let keys = (Object.keys(newPatient)).join(', ');
 
@@ -109,7 +109,7 @@ class Hospital {
       let total;
       db.all(`SELECT * FROM 'Patients'`, (err, rows) => {
         if (err){
-          console.log(err.message);
+          return cb (err, null);
         } else {
           total = rows.length + 1;
         }
@@ -117,9 +117,9 @@ class Hospital {
 
       db.run(`INSERT INTO 'Patients' (${keys}) VALUES('${newPatient.name}', '${newPatient.diagnosis}')`, (err) => {
         if (err) {
-          console.log(err.message);
+          return cb (err, null);
         } else {
-          cb(`patient with name: ${newPatient.name}, with diagnois(es): ${newPatient.diagnosis} saved successfully. Total patient : ${total}`);
+          return cb(null, {message: `patient with name: "${newPatient.name}", with diagnois(es): "${newPatient.diagnosis}" saved successfully. Total patient : ${total}`});
         }
       })
     })
