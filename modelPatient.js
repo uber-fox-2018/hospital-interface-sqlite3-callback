@@ -14,24 +14,24 @@ class Patient {
         
         db.get(queryDokterLogin, (err, data) => {
             if(err) {
-                callback(err, null)
+                cb(err, null)
             }else {
                 if(data !== undefined) {
                     db.run(queryAddPatient, (err, dataAdd) => {
                         if(err) {
-                            callback(err, null)
+                            cb(err, null)
                         }else {
                             db.get(queryTotalPatient, function(err, dataTotal) {
                                 if(err) {
-                                    callback(err, null)
+                                    cb(err, null)
                                 }else {
-                                    callback(null, dataTotal)
+                                    cb(null, dataTotal)
                                 }
                             })
                         }
                     })
                 }else {
-                    callback(err, null)
+                    cb(err, null)
                 }
             }
         })
