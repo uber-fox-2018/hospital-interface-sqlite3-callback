@@ -1,5 +1,5 @@
 const argv = process.argv.slice(2);
-const db = require('./config.js');
+
 const Controller = require('./controller.js')
 
 class Route {
@@ -10,12 +10,20 @@ class Route {
 
     routes() {
         let cmd = this._argv[0];
-        let ctrl = new Controller;
+        let ctrl = new Controller(this._argv);
         switch (cmd) {
             case 'register':
                 ctrl.register();
                 break;
-        
+            case 'login':
+                ctrl.login(this.argv);
+                break;
+            case 'logout':
+                ctrl.logout();
+                break;
+            // case 'register':
+            //     ctrl.register();
+            //     break;
             default:
                 break;
         }
