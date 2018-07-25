@@ -17,16 +17,19 @@ class ModelPatient {
           if (err) throw err;
           
           db.all(`SELECT * FROM Patients`, (err, data) => {
-            if (err) throw err;
-            let totalPatient = data.length
-            let message = `Data pasien berhasil ditambahkan. Total data pasien: ${totalPatient}`
-            // console.log(message)
-            callback(message)
+            if (err) {
+              callback(err, null)
+            } else {
+              let totalPatient = data.length
+              let sendData = {"totalPatient": totalPatient}
+              callback(null, sendData)
+            }
           })
 
         })
       } else {
-        console.log('Anda tidak memiliki akses menambahkan patient')
+        let msgErr = {"message": 'Anda tidak memiliki akses menambahkan patient'}
+        callback(msgErr, null)
       }
     })    
   }

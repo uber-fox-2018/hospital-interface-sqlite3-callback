@@ -3,8 +3,13 @@ const view = require('../view/view')
 
 class ControllerPatient {
   static addPatient(...data) {
-    modelPatient.addPatient([...data], message => {
-      view.message(message)
+    modelPatient.addPatient([...data], (err, message) => {
+      if (err) {
+        view.messageErr(err.message)
+      } else {
+        let msg = `Data pasien berhasil ditambahkan. Total data pasien: ${message.totalPatient}`
+        view.message(msg)
+      }
     })
   }
 }

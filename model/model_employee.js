@@ -6,9 +6,7 @@ class ModelEmployee {
     let employee = new Employee(data[0], data[1], data[2], data[3]);
     let queryRegister = `INSERT INTO Employees 
                          (name, username, password, position, login)
-                         VALUES ("${employee.name}","${employee.username}", "${
-      employee.password
-    }", "${employee.position}", "${employee.login}")`;
+                         VALUES ("${employee.name}","${employee.username}", "${employee.password}", "${employee.position}", "${employee.login}")`;
 
     db.run(queryRegister, err => {
       if (err) throw err;
@@ -17,12 +15,14 @@ class ModelEmployee {
       db.all(querySelectAllData, (err, data) => {
         if (err) throw err;
         let totalEmployee = data.length;
-        let message = `Save data success {name: ${employee.name}, username: ${
-          employee.username
-        }, password: ${employee.password}, position: ${
-          employee.position
-        }}. Total Employee: ${totalEmployee}`;
-        callback(message);
+        let sendData = {
+          "name": employee.name, 
+          "username": employee.username, 
+          "password": employee.password, 
+          "position": employee.position, 
+          "total": totalEmployee
+        }
+        callback(sendData);
       });
     });
   }
@@ -41,20 +41,20 @@ class ModelEmployee {
       if (err) throw err;
 
       if (data.length === 0) {
-        let messageErr = "Username or password wrong";
-        callback(messageErr);
+        let messageErr = {"msgErr": "Username or password wrong"};
+        callback(messageErr, null);
       } else {
         db.all(queryCheckLogin, (err, data) => {
           if (err) throw err;
 
           if (data[0].countLogin >= 1) {
-            let messageErr = "Sorry there's already signed in";
-            callback(messageErr);
+            let messageErr = {"msgErr": "Sorry there's already signed in"};
+            callback(messageErr, null);
           } else {
             db.run(queryUpdateLogin, err => {
               if (err) throw err;
-              let message = `User ${username} logged in successfully`;
-              callback(message);
+              let message = {"username": username};
+              callback(null, message);
             });
           }
         });
@@ -70,13 +70,13 @@ class ModelEmployee {
       if (err) throw err;
 
       if (data.length === 0) {
-        let messageErr = 'Silahkan login terlebih dahulu!'
-        callback(messageErr)
+        let messageErr = {"msgErr": 'Silahkan login terlebih dahulu!'}
+        callback(messageErr, null)
       } else {
         db.run(queryUpdateLogin, err => {
           if (err) throw err;
-          let message = `User ${data[0].username} successfully logout`
-          callback(message)
+          let sendData = {"username": data[0].username}
+          callback(null, sendData)
         })
       }
     })

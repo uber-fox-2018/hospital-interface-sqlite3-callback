@@ -12,6 +12,10 @@ class View {
   static message(msg) {
     console.log(msg)
   }
+
+  static messageErr(err) {
+    console.log(err)
+  }
 }
 
 module.exports = View
